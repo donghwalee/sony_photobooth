@@ -1,0 +1,12 @@
+{
+  "name": "sony_photobooth",
+  "version": "1.0.0",
+  "description": "Photobooth using Sony QX10",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Donghwa Lee",
+  "license": "ISC"
+}
