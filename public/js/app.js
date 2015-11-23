@@ -1,8 +1,10 @@
-var takePicture   = "{\r\"method\": \"actTakePicture\",\r\"params\": [],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
-var zoomIn        = "{\r\"method\": \"actZoom\",\r\"params\": [\"in\",\"1shot\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
-var zoomOut       = "{\r\"method\": \"actZoom\",\r\"params\": [\"out\",\"1shot\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
-var zoomInFull    = "{\r\"method\": \"actZoom\",\r\"params\": [\"in\",\"start\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
-var zoomOutFull   = "{\r\"method\": \"actZoom\",\r\"params\": [\"out\",\"start\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var takePicture    = "{\r\"method\": \"actTakePicture\",\r\"params\": [],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var zoomIn         = "{\r\"method\": \"actZoom\",\r\"params\": [\"in\",\"1shot\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var zoomOut        = "{\r\"method\": \"actZoom\",\r\"params\": [\"out\",\"1shot\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var zoomInFull     = "{\r\"method\": \"actZoom\",\r\"params\": [\"in\",\"start\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var zoomOutFull    = "{\r\"method\": \"actZoom\",\r\"params\": [\"out\",\"start\"],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var startLiveView  = "{\r\"method\": \"startLiveview\",\r\"params\": [],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
+var stopLiveView   = "{\r\"method\": \"stopLiveview\",\r\"params\": [],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
 
 
 // AJAX FUNCTIONS
@@ -20,8 +22,16 @@ $(function(){
       data: takePicture
     });
     promise.done(function(data) {
-      data.result.forEach(function(item){
-        $('body').append('<img src="'+item+'" class="result"></img>');
+      imageURL = data.result[0][0];
+      data.result.forEach(function(pic){
+        $('body').append(
+          '<img src="'+pic+'" class="result"></img><br /><hr /><br /><button id="print-image">PRINT</button>'
+        );
+        $('#print-image').click(function() {
+          var newWindow = window.open(imageURL);
+          newWindow.window.print();
+          // newWindow.window.close();
+        });
       });
     });
     promise.error(function(data) {
@@ -66,3 +76,8 @@ $(function(){
   });
 
 });
+
+
+// PRINT VAR & FUNCTION
+
+var imageURL = "";
