@@ -8,5 +8,9 @@
     "start": "node server.js"
   },
   "author": "Donghwa Lee",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "request": "^2.67.0"
+  }
 }
