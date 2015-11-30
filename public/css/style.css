@@ -3,6 +3,7 @@
 @import url(https://fonts.googleapis.com/css?family=Dancing+Script:400,700);
 
 /*http://simurai.com/lab/2011/08/21/brushed-metal/*/
+/*http://zurb.com/forrst/posts/CSS3_Metal_Background-NFP*/
 
 * {
   margin: 0;
@@ -41,6 +42,7 @@ a { text-decoration: none; display: block; }
 
   padding: 0;
 }
+
 
 /* Metal ------------------------- */
 
@@ -98,6 +100,7 @@ a { text-decoration: none; display: block; }
     hsla(210,50%,40%, .25) 0 -5px 6px 4px, /* outer SD */
     hsla(210,80%,95%,   1) 0  5px 6px 4px; /* outer HL */
 }
+
 
 #picture-area {
   padding-top: 20px;
