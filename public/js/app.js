@@ -1,4 +1,4 @@
-// COMMANDS
+// COMMANDS - from API reference
 
 var getStatus      = "{\r\"method\": \"getEvent\",\r\"params\": [true],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
 var takePicture    = "{\r\"method\": \"actTakePicture\",\r\"params\": [],\r\"id\": 1,\r\"version\": \"1.0\"\r}";
@@ -40,9 +40,18 @@ var printImage = function() {
 
 $(function(){
 
+  // SMILE
+  $('#take-picture').mouseover(function() {
+    window.speechSynthesis.speak(smile);
+  });
+
+  $('#take-picture').mouseout(function() {
+    window.speechSynthesis.cancel();
+  });
+
   //TAKE PICTURE
   $('#take-picture').click(function(event) {
-    event.preventDefault();
+
     $('#status-code').empty();
     getOrientation();
 
@@ -57,7 +66,7 @@ $(function(){
     // AFTER TAKING A PICTURE
 
     promise.done(function(data) {
-
+      window.speechSynthesis.speak(lookNice);
       $('#picture-area').empty();
       $('#bottom-controls').empty();
       imageURL = data.result[0][0];
@@ -149,8 +158,6 @@ $(function(){
     });
   });
 
-
-
   //GET STATUS
   // $('#get-status').click(function(event) {
   //   event.preventDefault();
@@ -196,3 +203,8 @@ $(function(){
   }
 
 });
+
+// TEXT TO SPEECH?
+
+var smile = new SpeechSynthesisUtterance('Give me a nice big smile!');
+var lookNice = new SpeechSynthesisUtterance('You look very nice, did you do something to your hair?');
