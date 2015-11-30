@@ -43,6 +43,7 @@ $(function(){
   //TAKE PICTURE
   $('#take-picture').click(function(event) {
     event.preventDefault();
+    $('#status-code').empty();
     getOrientation();
 
     var promise = $.ajax({
@@ -58,11 +59,18 @@ $(function(){
     promise.done(function(data) {
 
       $('#picture-area').empty();
+      $('#bottom-controls').empty();
       imageURL = data.result[0][0];
 
       data.result.forEach(function(pic){
         $('#picture-area').append(
-          '<img src="'+pic+'" id="rotate"></img><div id="result-controls"><hr /><button id="print-image">PRINT</button> <button id="fb-share">SHARE ON FACEBOOK</button></div>'
+          '<img src="'+pic+'" id="rotate"></img>'
+        );
+        $('#bottom-controls').append(
+          '<div id="result-controls"><button class="metal linear" id="print-image"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>'
+        );
+        $('#status-code').append(
+          'PICTURE TAKEN'
         );
         $('#rotate').css({
           WebkitTransform: 'rotate(' + orientation + 'deg)'
@@ -71,11 +79,13 @@ $(function(){
           '-moz-transform': 'rotate(' + orientation + 'deg)'
         });
         if (orientation == 90 || orientation == 270) {
-          $('#result-controls').css({'margin-top': $('#rotate').width()/7});
-          $('#top-controls').css({'margin-bottom': $('#rotate').width()/7});
+          // $('#bottom-controls').css({'margin-top': $('#rotate').width()/5});
+          // $('#top-controls').css({'margin-bottom': $('#rotate').width()/5});
+          $('#picture-area').css({'padding-top': '120px'});
         } else {
-          $('#rotate-controls').css({'margin-top': 0});
+          $('#bottom-controls').css({'margin-top': 0});
           $('#top-controls').css({'margin-bottom': 0});
+          $('#picture-area').css({'padding-top': '100px'});
         }
         $('#print-image').click(function() {
           printImage();
@@ -90,6 +100,7 @@ $(function(){
     });
 
     promise.error(function(data) {
+      $('#status-code').empty();
       console.log("error");
     });
   });
@@ -97,6 +108,7 @@ $(function(){
   //ZOOM IN SMALL
   $('#zoom-in').click(function(event) {
     event.preventDefault();
+    $('#status-code').empty();
     var promise = $.ajax({
       url: 'http://10.0.0.1:10000/sony/camera',
       method: 'POST',
@@ -106,6 +118,9 @@ $(function(){
     });
     promise.done(function(data) {
       console.log(data);
+      $('#status-code').append(
+        'ZOOM IN'
+      );
     });
     promise.error(function(data) {
       console.log("error");
@@ -115,6 +130,7 @@ $(function(){
   //ZOOM OUT SMALL
   $('#zoom-out').click(function(event) {
     event.preventDefault();
+    $('#status-code').empty();
     var promise = $.ajax({
       url: 'http://10.0.0.1:10000/sony/camera',
       method: 'POST',
@@ -124,6 +140,9 @@ $(function(){
     });
     promise.done(function(data) {
       console.log(data);
+      $('#status-code').append(
+        'ZOOM OUT'
+      );
     });
     promise.error(function(data) {
       console.log("error");
