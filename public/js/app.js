@@ -114,6 +114,90 @@ $(function(){
     });
   });
 
+
+  // 3 Sec Counter
+
+  $('#countdown').click(function(event) {
+    $('#status-code').empty();
+    // clear picture area and say three
+    $('#picture-area').empty();
+    window.speechSynthesis.speak(ready);
+    // flash the status
+    var flash = setInterval(function(){
+      $('#status-code').append(
+        'TIMER'
+      );
+      setTimeout(function(){
+        $('#status-code').empty();
+      }, 300);
+    }, 1000);
+    // start the timer
+    setTimeout(function(){
+      window.speechSynthesis.speak(three);
+      // two
+      setTimeout(function(){
+        window.speechSynthesis.speak(two);
+        // one
+        setTimeout(function(){
+          window.speechSynthesis.speak(smile);
+          // take picture
+          setTimeout(function(){
+            clearInterval(flash);
+            $('#status-code').empty();
+            getOrientation();
+            var promise = $.ajax({
+              url: 'http://10.0.0.1:10000/sony/camera',
+              method: 'POST',
+              dataType: 'json',
+              processData: false,
+              data: takePicture
+            });
+            promise.done(function(data) {
+              $('#picture-area').empty();
+              $('#bottom-controls').empty();
+              imageURL = data.result[0][0];
+              data.result.forEach(function(pic){
+                $('#picture-area').append(
+                  '<img src="'+pic+'" id="rotate"></img>'
+                );
+                $('#bottom-controls').append(
+                  '<div id="result-controls"><button class="metal linear" id="print-image"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>'
+                );
+                $('#status-code').append(
+                  'PICTURE TAKEN'
+                );
+                $('#rotate').css({
+                  WebkitTransform: 'rotate(' + orientation + 'deg)'
+                });
+                $('#rotate').css({
+                  '-moz-transform': 'rotate(' + orientation + 'deg)'
+                });
+                if (orientation == 90 || orientation == 270) {
+                  $('#picture-area').css({'padding-top': '120px'});
+                } else {
+                  $('#bottom-controls').css({'margin-top': 0});
+                  $('#top-controls').css({'margin-bottom': 0});
+                  $('#picture-area').css({'padding-top': '100px'});
+                }
+                $('#print-image').click(function() {
+                  printImage();
+                });
+                $('#fb-share').click(function() {
+                  event.preventDefault();
+                  console.log(imageURL);
+                });
+              });
+            });
+            promise.error(function(data) {
+              $('#status-code').empty();
+              console.log("error");
+            });
+          }, 2000);
+        }, 1000);
+      }, 1000);
+    }, 2000);
+  });
+
   //ZOOM IN SMALL
   $('#zoom-in').click(function(event) {
     event.preventDefault();
@@ -208,3 +292,6 @@ $(function(){
 
 var smile = new SpeechSynthesisUtterance('Give me a nice big smile!');
 var lookNice = new SpeechSynthesisUtterance('You look very nice, did you do something to your hair?');
+var ready = new SpeechSynthesisUtterance('OK, get ready');
+var three = new SpeechSynthesisUtterance('Three');
+var two = new SpeechSynthesisUtterance('Two');
