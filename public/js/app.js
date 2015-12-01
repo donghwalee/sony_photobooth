@@ -129,7 +129,7 @@ $(function(){
       );
       setTimeout(function(){
         $('#status-code').empty();
-      }, 300);
+      }, 500);
     }, 1000);
     // start the timer
     setTimeout(function(){
